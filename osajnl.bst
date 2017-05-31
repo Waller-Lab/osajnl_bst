@@ -863,6 +863,30 @@ FUNCTION {format.in.ed.booktitle}
     }
   if$
 }
+FUNCTION {format.procbooktitle}
+{
+  booktitle "booktitle" bibinfo.check
+}
+FUNCTION {format.in.ed.procbooktitle}
+{ format.procbooktitle duplicate$ empty$ 'skip$
+    {
+      format.bvolume duplicate$ empty$ 'pop$
+        { ", " swap$ * * }
+      if$
+      editor "editor" format.names.ed duplicate$ empty$ 'pop$
+        {
+          get.bbl.editor
+          swap$ "," *
+          " " * swap$ *
+          swap$
+          "," *
+          " " * swap$
+          * }
+      if$
+      word.in swap$ *
+    }
+  if$
+}
 FUNCTION {empty.misc.check}
 { author empty$ title empty$ howpublished empty$
   month empty$ year empty$ note empty$
@@ -1150,7 +1174,7 @@ FUNCTION {inproceedings}
   format.title "title" output.check
   end.quote.title
   crossref missing$
-    { format.in.ed.booktitle "booktitle" output.check
+    { format.in.ed.procbooktitle "booktitle" output.check
       end.quote.btitle
       publisher empty$
         { format.organization.address output }
